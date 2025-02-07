@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "CMakeFiles\\exercise_1.dir\\main.cpp.obj",
+            "outputs": [
+                "CMakeFiles\\exercise_1.dir\\main.cpp.obj.ddi"
+            ],
+            "requires": []
+        }
+    ]
+}

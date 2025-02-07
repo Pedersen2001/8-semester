@@ -1,0 +1,8 @@
+# ninja log v6
+4070	4399	7603688717947002	exercise_1.exe	8363d6766b9ef9e7
+3	155	7606248405927701	build.ninja	b235a2c63d59b4e8
+232	277	7603688679571536	CMakeFiles/exercise_1.dir/main.cpp.obj.modmap	4726ea4b3604503e
+232	277	7603688679571536	C:/Users/lucas/GitRepos/8-semester/sP - Selected Topics in Programming/Lecture_1/exercise_1/cmake-build-debug-visual-studio/CMakeFiles/exercise_1.dir/CXXModules.json	4726ea4b3604503e
+3	231	7603688677292671	CMakeFiles/exercise_1.dir/main.cpp.obj.ddi	c4ea6017eb901c28
+232	277	7603688679571536	CMakeFiles/exercise_1.dir/CXX.dd	4726ea4b3604503e
+277	4070	7603688680031515	CMakeFiles/exercise_1.dir/main.cpp.obj	8aeda0858f277657

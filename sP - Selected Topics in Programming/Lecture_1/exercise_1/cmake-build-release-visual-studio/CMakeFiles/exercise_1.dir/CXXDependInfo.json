@@ -1,0 +1,18 @@
+{
+	"bmi-installation" : null,
+	"compiler-frontend-variant" : "MSVC",
+	"compiler-id" : "MSVC",
+	"compiler-simulate-id" : "",
+	"config" : "Release",
+	"cxx-modules" : {},
+	"dir-cur-bld" : "C:/Users/lucas/GitRepos/8-semester/sP - Selected Topics in Programming/Lecture_1/exercise_1/cmake-build-release-visual-studio",
+	"dir-cur-src" : "C:/Users/lucas/GitRepos/8-semester/sP - Selected Topics in Programming/Lecture_1/exercise_1",
+	"dir-top-bld" : "C:/Users/lucas/GitRepos/8-semester/sP - Selected Topics in Programming/Lecture_1/exercise_1/cmake-build-release-visual-studio",
+	"dir-top-src" : "C:/Users/lucas/GitRepos/8-semester/sP - Selected Topics in Programming/Lecture_1/exercise_1",
+	"exports" : [],
+	"forward-modules-from-target-dirs" : [],
+	"include-dirs" : [],
+	"language" : "CXX",
+	"linked-target-dirs" : [],
+	"module-dir" : "C:/Users/lucas/GitRepos/8-semester/sP - Selected Topics in Programming/Lecture_1/exercise_1/cmake-build-release-visual-studio/CMakeFiles/exercise_1.dir"
+}
