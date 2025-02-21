@@ -1,0 +1,3 @@
+C:/Users/lucas/GitRepos/8-semester/sP - Selected Topics in Programming/Lecture_5/cmake-build-debug/CMakeFiles/Lecture_5.dir
+C:/Users/lucas/GitRepos/8-semester/sP - Selected Topics in Programming/Lecture_5/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/lucas/GitRepos/8-semester/sP - Selected Topics in Programming/Lecture_5/cmake-build-debug/CMakeFiles/rebuild_cache.dir
