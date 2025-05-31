@@ -1,0 +1,435 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix schema: <http://schema.org/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix geo: <http://www.opengis.net/ont/geosparql#> . # For geographic locations
+@prefix event: <http://purl.org/NET/c4dm/event.owl#> . # Basic event ontology
+@prefix bibo: <http://purl.org/ontology/bibo/> . # Bibliographic Ontology
+@prefix org: <http://www.w3.org/ns/org#> . # Organization ontology
+@prefix review: <http://purl.org/ontology/prv/Review#> . # For peer reviews
+
+# ---------------------------------------------------
+# Ontology Classes
+# ---------------------------------------------------
+
+aks:Conference a rdfs:Class ;
+    rdfs:label "Conference" ;
+    rdfs:comment "Represents a research conference." .
+
+aks:Person a rdfs:Class ;
+    rdfs:label "Person" ;
+    rdfs:comment "Represents a person involved in the conference." .
+
+aks:Organizer a rdfs:Class ;
+    rdfs:subClassOf aks:Person ;
+    rdfs:label "Organizer" ;
+    rdfs:comment "A person who organizes the conference." .
+
+aks:Speaker a rdfs:Class ;
+    rdfs:subClassOf aks:Person ;
+    rdfs:label "Speaker" ;
+    rdfs:comment "A person who presents a talk or session at the conference." .
+
+aks:Attendee a rdfs:Class ;
+    rdfs:subClassOf aks:Person ;
+    rdfs:label "Attendee" ;
+    rdfs:comment "A person who attends the conference." .
+
+aks:Session a rdfs:Class ;
+    rdfs:label "Session" ;
+    rdfs:comment "Represents a thematic session within the conference." .
+
+aks:Talk a rdfs:Class ;
+    rdfs:subClassOf aks:Session ;
+    rdfs:label "Talk" ;
+    rdfs:comment "Represents an individual presentation within a session or independently." .
+
+aks:ResearchPaper a rdfs:Class ;
+    rdfs:label "Research Paper" ;
+    rdfs:comment "Represents a research paper submitted or published at the conference." .
+
+aks:Sponsor a rdfs:Class ;
+    rdfs:subClassOf org:Organization ;
+    rdfs:label "Sponsor" ;
+    rdfs:comment "An organization that sponsors the conference." .
+
+aks:Sponsorship a rdfs:Class ;
+    rdfs:label "Sponsorship" ;
+    rdfs:comment "Represents a specific sponsorship agreement including financial support." .
+
+aks:EventLocation a rdfs:Class ;
+    rdfs:subClassOf schema:Place ;
+    rdfs:label "Event Location" ;
+    rdfs:comment "Represents a physical or virtual location for a conference event." .
+
+aks:SocialMediaMention a rdfs:Class ;
+    rdfs:label "Social Media Mention" ;
+    rdfs:comment "Represents a tweet or blog post mentioning the event." .
+
+aks:Review a rdfs:Class ;
+    rdfs:subClassOf review:Review ;
+    rdfs:label "Review" ;
+    rdfs:comment "Represents a peer review for a research paper." .
+
+
+# ---------------------------------------------------
+# Ontology Properties
+# ---------------------------------------------------
+
+# Conference Details
+aks:hasStartDate a rdf:Property ;
+    rdfs:label "has start date" ;
+    rdfs:domain aks:Conference ;
+    rdfs:range xsd:date .
+
+aks:hasEndDate a rdf:Property ;
+    rdfs:label "has end date" ;
+    rdfs:domain aks:Conference ;
+    rdfs:range xsd:date .
+
+aks:locatedIn a rdf:Property ;
+    rdfs:label "located in" ;
+    rdfs:domain aks:Conference ;
+    rdfs:range aks:EventLocation .
+
+aks:hasTimezone a rdf:Property ;
+    rdfs:label "has timezone" ;
+    rdfs:domain aks:EventLocation ;
+    rdfs:range xsd:string . # e.g., "Europe/Copenhagen"
+
+# People Involved
+aks:isOrganizerOf a rdf:Property ;
+    rdfs:label "is organizer of" ;
+    rdfs:domain aks:Organizer ;
+    rdfs:range aks:Conference .
+
+aks:isSpeakerAt a rdf:Property ;
+    rdfs:label "is speaker at" ;
+    rdfs:domain aks:Speaker ;
+    rdfs:range aks:Conference .
+
+aks:attends a rdf:Property ;
+    rdfs:label "attends" ;
+    rdfs:domain aks:Attendee ;
+    rdfs:range aks:Conference .
+
+# Sessions/Talks
+aks:hasSession a rdf:Property ;
+    rdfs:label "has session" ;
+    rdfs:domain aks:Conference ;
+    rdfs:range aks:Session .
+
+aks:hasTalk a rdf:Property ;
+    rdfs:label "has talk" ;
+    rdfs:domain aks:Session ;
+    rdfs:range aks:Talk .
+
+aks:talkTitle a rdf:Property ;
+    rdfs:label "talk title" ;
+    rdfs:domain aks:Talk ;
+    rdfs:range xsd:string .
+
+aks:talkAbstract a rdf:Property ;
+    rdfs:label "talk abstract" ;
+    rdfs:domain aks:Talk ;
+    rdfs:range xsd:string .
+
+aks:presentedBy a rdf:Property ;
+    rdfs:label "presented by" ;
+    rdfs:domain aks:Talk ;
+    rdfs:range aks:Speaker .
+
+aks:hasTiming a rdf:Property ;
+    rdfs:label "has timing" ;
+    rdfs:domain aks:Session, aks:Talk ;
+    rdfs:range xsd:dateTime . # Start time of the session/talk
+
+aks:endsAt a rdf:Property ;
+    rdfs:label "ends at" ;
+    rdfs:domain aks:Session, aks:Talk ;
+    rdfs:range xsd:dateTime . # End time of the session/talk
+
+# Research Papers
+aks:hasPaper a rdf:Property ;
+    rdfs:label "has paper" ;
+    rdfs:domain aks:Conference ;
+    rdfs:range aks:ResearchPaper .
+
+aks:paperTitle a rdf:Property ;
+    rdfs:label "paper title" ;
+    rdfs:domain aks:ResearchPaper ;
+    rdfs:range xsd:string .
+
+aks:authoredBy a rdf:Property ;
+    rdfs:label "authored by" ;
+    rdfs:domain aks:ResearchPaper ;
+    rdfs:range aks:Person .
+
+aks:hasTopic a rdf:Property ;
+    rdfs:label "has topic" ;
+    rdfs:domain aks:ResearchPaper ;
+    rdfs:range xsd:string . # e.g., "Machine Learning", "NLP"
+
+aks:publishedIn a rdf:Property ;
+    rdfs:label "published in" ;
+    rdfs:domain aks:ResearchPaper ;
+    rdfs:range schema:Periodical . # Using schema.org for publication venue
+
+aks:hasReview a rdf:Property ;
+    rdfs:label "has review" ;
+    rdfs:domain aks:ResearchPaper ;
+    rdfs:range aks:Review .
+
+aks:reviewText a rdf:Property ;
+    rdfs:label "review text" ;
+    rdfs:domain aks:Review ;
+    rdfs:range xsd:string .
+
+aks:reviewScore a rdf:Property ;
+    rdfs:label "review score" ;
+    rdfs:domain aks:Review ;
+    rdfs:range xsd:integer .
+
+aks:reviewedBy a rdf:Property ;
+    rdfs:label "reviewed by" ;
+    rdfs:domain aks:Review ;
+    rdfs:range aks:Person .
+
+# Sponsorship
+aks:hasSponsorship a rdf:Property ;
+    rdfs:label "has sponsorship" ;
+    rdfs:domain aks:Conference ;
+    rdfs:range aks:Sponsorship .
+
+aks:sponsoredBy a rdf:Property ;
+    rdfs:label "sponsored by" ;
+    rdfs:domain aks:Sponsorship ;
+    rdfs:range aks:Sponsor .
+
+aks:financialSupport a rdf:Property ;
+    rdfs:label "financial support" ;
+    rdfs:domain aks:Sponsorship ;
+    rdfs:range xsd:decimal .
+
+aks:currency a rdf:Property ;
+    rdfs:label "currency" ;
+    rdfs:domain aks:Sponsorship ;
+    rdfs:range xsd:string . # e.g., "USD", "EUR"
+
+# Event Locations
+aks:isPhysicalLocation a rdf:Property ;
+    rdfs:label "is physical location" ;
+    rdfs:domain aks:EventLocation ;
+    rdfs:range xsd:boolean .
+
+aks:isVirtualLocation a rdf:Property ;
+    rdfs:label "is virtual location" ;
+    rdfs:domain aks:EventLocation ;
+    rdfs:range xsd:boolean .
+
+aks:hasAddress a rdf:Property ;
+    rdfs:label "has address" ;
+    rdfs:domain aks:EventLocation ;
+    rdfs:range schema:PostalAddress .
+
+aks:hasGeoCoordinates a rdf:Property ;
+    rdfs:label "has geo coordinates" ;
+    rdfs:domain aks:EventLocation ;
+    rdfs:range geo:Feature . # Or a simpler schema:GeoCoordinates
+
+aks:hasVirtualUrl a rdf:Property ;
+    rdfs:label "has virtual URL" ;
+    rdfs:domain aks:EventLocation ;
+    rdfs:range xsd:anyURI .
+
+# Social Media Mentions
+aks:hasSocialMediaMention a rdf:Property ;
+    rdfs:label "has social media mention" ;
+    rdfs:domain aks:Conference ;
+    rdfs:range aks:SocialMediaMention .
+
+aks:mentionText a rdf:Property ;
+    rdfs:label "mention text" ;
+    rdfs:domain aks:SocialMediaMention ;
+    rdfs:range xsd:string .
+
+aks:mentionAuthor a rdf:Property ;
+    rdfs:label "mention author" ;
+    rdfs:domain aks:SocialMediaMention ;
+    rdfs:range foaf:Agent . # Can be foaf:Person or foaf:Organization
+
+aks:mentionTimestamp a rdf:Property ;
+    rdfs:label "mention timestamp" ;
+    rdfs:domain aks:SocialMediaMention ;
+    rdfs:range xsd:dateTime .
+
+aks:mentionPlatform a rdf:Property ;
+    rdfs:label "mention platform" ;
+    rdfs:domain aks:SocialMediaMention ;
+    rdfs:range xsd:string . # e.g., "Twitter", "Blog"
+
+
+# ---------------------------------------------------
+# Instances (The RDF Graph)
+# ---------------------------------------------------
+
+# 1. Conference Details
+aks:AIKnowledgeSummit2025 a aks:Conference ;
+    schema:name "AI Knowledge Summit 2025" ;
+    aks:hasStartDate "2025-10-15"^^xsd:date ;
+    aks:hasEndDate "2025-10-17"^^xsd:date ;
+    aks:locatedIn aks:BellaCenterCopenhagen, aks:OnlinePlatform .
+
+aks:BellaCenterCopenhagen a aks:EventLocation ;
+    rdfs:label "Bella Center Copenhagen" ;
+    aks:isPhysicalLocation true ;
+    aks:hasAddress [
+        a schema:PostalAddress ;
+        schema:streetAddress "Center Boulevard 5" ;
+        schema:addressLocality "Copenhagen" ;
+        schema:postalCode "2300" ;
+        schema:addressCountry "Denmark"
+    ] ;
+    aks:hasTimezone "Europe/Copenhagen" .
+
+aks:OnlinePlatform a aks:EventLocation ;
+    rdfs:label "AI Knowledge Summit 2025 Online Platform" ;
+    aks:isVirtualLocation true ;
+    aks:hasTimezone "UTC" . # Using UTC for virtual for simplicity, or could align with physical
+
+# 2. People Involved
+aks:DrAnnaSmith a aks:Organizer, aks:Speaker ;
+    foaf:name "Dr. Anna Smith" ;
+    foaf:mbox <mailto:anna.smith@example.org> ;
+    aks:isOrganizerOf aks:AIKnowledgeSummit2025 ;
+    aks:isSpeakerAt aks:AIKnowledgeSummit2025 .
+
+aks:ProfJohnDoe a aks:Speaker ;
+    foaf:name "Prof. John Doe" ;
+    foaf:mbox <mailto:john.doe@university.edu> ;
+    aks:isSpeakerAt aks:AIKnowledgeSummit2025 .
+
+aks:MsJanePublic a aks:Attendee ;
+    foaf:name "Ms. Jane Public" ;
+    foaf:mbox <mailto:jane.public@attendee.com> ;
+    aks:attends aks:AIKnowledgeSummit2025 .
+
+# 3. Sessions/Talks
+aks:KeynoteAISafety a aks:Talk ;
+    aks:talkTitle "Keynote: Ensuring AI Safety in Critical Systems" ;
+    aks:talkAbstract "This keynote will delve into the challenges and solutions for building safe and reliable AI." ;
+    aks:presentedBy aks:DrAnnaSmith ;
+    aks:hasTiming "2025-10-15T09:00:00+02:00"^^xsd:dateTime ; # Copenhagen time (CEST)
+    aks:endsAt "2025-10-15T10:00:00+02:00"^^xsd:dateTime .
+
+aks:NLPAdvancesSession a aks:Session ;
+    rdfs:label "Advances in Natural Language Processing" ;
+    aks:hasTiming "2025-10-15T11:00:00+02:00"^^xsd:dateTime ;
+    aks:endsAt "2025-10-15T12:30:00+02:00"^^xsd:dateTime ;
+    aks:hasTalk aks:TalkLLMsEthics, aks:TalkSemanticParsing .
+
+aks:TalkLLMsEthics a aks:Talk ;
+    aks:talkTitle "Ethical Considerations in Large Language Models" ;
+    aks:talkAbstract "Examining bias and fairness in current LLMs." ;
+    aks:presentedBy aks:ProfJohnDoe ;
+    aks:hasTiming "2025-10-15T11:05:00+02:00"^^xsd:dateTime ;
+    aks:endsAt "2025-10-15T11:35:00+02:00"^^xsd:dateTime .
+
+aks:TalkSemanticParsing a aks:Talk ;
+    aks:talkTitle "Neural Semantic Parsing for Complex Queries" ;
+    aks:talkAbstract "New approaches to converting natural language to logical forms." ;
+    aks:presentedBy aks:DrEmmaWhite ; # New speaker
+    aks:hasTiming "2025-10-15T11:40:00+02:00"^^xsd:dateTime ;
+    aks:endsAt "2025-10-15T12:10:00+02:00"^^xsd:dateTime .
+
+aks:DrEmmaWhite a aks:Speaker ;
+    foaf:name "Dr. Emma White" ;
+    foaf:mbox <mailto:emma.white@research.org> ;
+    aks:isSpeakerAt aks:AIKnowledgeSummit2025 .
+
+
+# 4. Research Papers
+aks:PaperAIforHealthcare a aks:ResearchPaper ;
+    aks:paperTitle "AI-Driven Diagnostics in Early Disease Detection" ;
+    aks:authoredBy aks:DrAnnaSmith, aks:ProfJohnDoe ;
+    aks:hasTopic "Healthcare AI" ;
+    aks:hasTopic "Medical Diagnostics" ;
+    aks:publishedIn [
+        a schema:Periodical ;
+        schema:name "Journal of Artificial Intelligence Research"
+    ] ;
+    aks:hasReview aks:ReviewPaper1_1, aks:ReviewPaper1_2 .
+
+aks:PaperRoboticsEthics a aks:ResearchPaper ;
+    aks:paperTitle "Ethical Frameworks for Autonomous Robotics" ;
+    aks:authoredBy aks:DrEmmaWhite ;
+    aks:hasTopic "Robotics Ethics" ;
+    aks:publishedIn [
+        a schema:Periodical ;
+        schema:name "Conference on Robotics and Automation Proceedings"
+    ] ;
+    aks:hasReview aks:ReviewPaper2_1 .
+
+# Peer Reviews
+aks:ReviewPaper1_1 a aks:Review ;
+    aks:reviewText "The paper presents a novel approach with strong empirical results. Minor clarity issues." ;
+    aks:reviewScore 4 ;
+    aks:reviewedBy aks:ProfDavidLee . # New reviewer
+
+aks:ReviewPaper1_2 a aks:Review ;
+    aks:reviewText "Excellent contribution, clearly written and impactful. No major revisions needed." ;
+    aks:reviewScore 5 ;
+    aks:reviewedBy aks:DrMariaChen . # New reviewer
+
+aks:ReviewPaper2_1 a aks:Review ;
+    aks:reviewText "Interesting theoretical framework, but lacks concrete examples. Needs more practical implications." ;
+    aks:reviewScore 3 ;
+    aks:reviewedBy aks:ProfDavidLee .
+
+aks:ProfDavidLee a aks:Person ; # Can be general Person if not explicitly Organizer/Speaker/Attendee
+    foaf:name "Prof. David Lee" .
+
+aks:DrMariaChen a aks:Person ;
+    foaf:name "Dr. Maria Chen" .
+
+# 5. Sponsorship
+aks:SponsorshipGoogleAI a aks:Sponsorship ;
+    aks:sponsoredBy aks:GoogleAI ;
+    aks:financialSupport "50000.00"^^xsd:decimal ;
+    aks:currency "USD" .
+
+aks:GoogleAI a aks:Sponsor ;
+    rdfs:label "Google AI" ;
+
+aks:SponsorshipDeepMind a aks:Sponsorship ;
+    aks:sponsoredBy aks:DeepMind ;
+    aks:financialSupport "30000.00"^^xsd:decimal ;
+    aks:currency "EUR" .
+
+aks:DeepMind a aks:Sponsor ;
+    rdfs:label "DeepMind" ;
+
+aks:AIKnowledgeSummit2025 aks:hasSponsorship aks:SponsorshipGoogleAI, aks:SponsorshipDeepMind .
+
+# 7. Social Media Mentions
+aks:Tweet1 a aks:SocialMediaMention ;
+    aks:mentionText "Excited for #AIKnowledgeSummit2025 in Copenhagen! Looking forward to the keynotes on AI safety." ;
+    aks:mentionAuthor [
+        a foaf:Person ;
+        foaf:name "AI Enthusiast" ;
+        foaf:accountName "ai_enthusiast_123" ;
+    ] ;
+    aks:mentionTimestamp "2025-05-20T10:30:00Z"^^xsd:dateTime ;
+    aks:mentionPlatform "Twitter" .
+
+aks:BlogPost1 a aks:SocialMediaMention ;
+    aks:mentionText "My latest blog post discusses the upcoming AI Knowledge Summit, highlighting key research themes." ;
+    aks:mentionAuthor [
+        a foaf:Person ;
+        foaf:name "Tech Blogger" ;
+    ] ;
+    aks:mentionTimestamp "2025-05-25T14:00:00Z"^^xsd:dateTime ;
+    aks:mentionPlatform "Blog" .
+
+aks:AIKnowledgeSummit2025 aks:hasSocialMediaMention aks:Tweet1, aks:BlogPost1 .

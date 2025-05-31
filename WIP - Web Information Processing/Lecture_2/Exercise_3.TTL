@@ -1,0 +1,92 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# ---------------------------------------------------
+# Classes Definition
+# ---------------------------------------------------
+
+school:Student a rdfs:Class ;
+    rdfs:label "Student" ;
+    rdfs:comment "Represents a student enrolled in the school system." .
+
+school:Teacher a rdfs:Class ;
+    rdfs:label "Teacher" ;
+    rdfs:comment "Represents a teacher in the school system." .
+
+school:Subject a rdfs:Class ;
+    rdfs:label "Subject" ;
+    rdfs:comment "Represents a general academic subject (e.g., Math, English)." .
+
+school:Course a rdfs:Class ;
+    rdfs:label "Course" ;
+    rdfs:comment "Represents a specific course offered (e.g., Algebra I, English Literature)." .
+
+# ---------------------------------------------------
+# Properties Definition and Constraints
+# ---------------------------------------------------
+
+# Property: teaches
+# Constraint: Only Teacher can have the teaches property.
+# Constraint: teaches links a Teacher to a Subject.
+school:teaches a rdf:Property ;
+    rdfs:label "teaches" ;
+    rdfs:comment "Links a Teacher to a Subject they teach." ;
+    rdfs:domain school:Teacher ; # Only instances of school:Teacher can be the subject of this property
+    rdfs:range school:Subject .  # The object of this property must be an instance of school:Subject
+
+# Property: enrolledIn
+# Constraint: Only Student can have the enrolledIn property.
+# Constraint: enrolledIn links a Student to a Course.
+school:enrolledIn a rdf:Property ;
+    rdfs:label "enrolled in" ;
+    rdfs:comment "Links a Student to a Course they are enrolled in." ;
+    rdfs:domain school:Student ; # Only instances of school:Student can be the subject of this property
+    rdfs:range school:Course .  # The object of this property must be an instance of school:Course
+
+
+# ---------------------------------------------------
+# Example Instances
+# ---------------------------------------------------
+
+# Subjects
+school:Math a school:Subject ;
+    rdfs:label "Mathematics" .
+
+school:English a school:Subject ;
+    rdfs:label "English" .
+
+school:History a school:Subject ;
+    rdfs:label "History" .
+
+# Courses
+school:Algebra_I a school:Course ;
+    rdfs:label "Algebra I" .
+
+school:English_Literature a school:Course ;
+    rdfs:label "English Literature" .
+
+school:World_History_101 a school:Course ;
+    rdfs:label "World History 101" .
+
+# Teachers
+school:Teacher_Smith a school:Teacher ;
+    rdfs:label "Mr. Smith" ;
+    school:teaches school:Math ;
+    school:teaches school:Algebra_I . # A teacher might teach a specific course which is an instance of a broader subject
+
+school:Teacher_Jones a school:Teacher ;
+    rdfs:label "Ms. Jones" ;
+    school:teaches school:English ;
+    school:teaches school:English_Literature .
+
+# Students
+school:Student_Alice a school:Student ;
+    rdfs:label "Alice" ;
+    school:enrolledIn school:Algebra_I ;
+    school:enrolledIn school:English_Literature .
+
+school:Student_Bob a school:Student ;
+    rdfs:label "Bob" ;
+    school:enrolledIn school:Algebra_I ;
+    school:enrolledIn school:World_History_101 .

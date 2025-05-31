@@ -1,0 +1,45 @@
+1. "2"^^xsd:integer vs. "2.0"^^xsd:decimal
+   xsd:integer represents exact integer values (whole numbers).
+
+xsd:decimal allows decimal numbers, and "2.0" explicitly includes a decimal point, which makes it a decimal rather than an integer.
+
+These two literals do not describe the same value because their datatypes are different, and "2" (integer) and "2.0" (decimal) are not considered identical in RDF.
+
+Conclusion: Not the same.
+
+---
+
+2. "2"^^xsd:decimal vs. "2"^^xsd:float
+   xsd:decimal is an exact decimal number representation.
+
+xsd:float represents floating-point numbers, which are subject to precision issues and IEEE 754 representation.
+
+Even though "2" as a float and decimal may seem numerically equal, xsd:float uses a different representation that allows approximations, making them not necessarily identical in RDF.
+
+Conclusion: Not the same.
+
+---
+
+3. "2018-11-06T15:40:00+01:00"^^xsd:dateTime vs. "2018-11-06T14:40:00Z"^^xsd:dateTime
+   xsd:dateTime values can have time zones.
+
+"2018-11-06T15:40:00+01:00" means 15:40 in UTC+1.
+
+"2018-11-06T14:40:00Z" means 14:40 in UTC (Z means Zulu time, or UTC+0).
+
+Converting "2018-11-06T15:40:00+01:00" to UTC gives "2018-11-06T14:40:00Z".
+
+Since these two values refer to the same absolute point in time, they describe the same value.
+
+Conclusion: Same value.
+
+---
+
+4. "2018-11-06T15:40:00+01:00"^^xsd:dateTime vs. "2018-11-06T14:40:00"^^xsd:dateTime
+   "2018-11-06T15:40:00+01:00" is explicitly in UTC+1.
+
+"2018-11-06T14:40:00" has no timezone information, which means it is a local time and cannot be directly compared to a timestamp with a defined timezone.
+
+In RDF, literals with different explicit time zones and those without time zones are not considered identical unless additional context (implicit timezone) is given.
+
+Conclusion: Not the same.

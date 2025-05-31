@@ -1,0 +1,34 @@
+"C:\Program Files\JetBrains\CLion 2024.3.2\bin\cmake\win\x64\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_MAKE_PROGRAM=C:/Program Files/JetBrains/CLion 2024.3.2/bin/ninja/win/x64/ninja.exe" -G Ninja -S "C:\Users\lucas\GitRepos\8-semester\sP - Selected Topics in Programming\Lecture_6" -B "C:\Users\lucas\GitRepos\8-semester\sP - Selected Topics in Programming\Lecture_6\cmake-build-debug"
+-- The C compiler identification is GNU 13.1.0
+-- The CXX compiler identification is GNU 13.1.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: C:/Program Files/JetBrains/CLion 2024.3.2/bin/mingw/bin/gcc.exe - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: C:/Program Files/JetBrains/CLion 2024.3.2/bin/mingw/bin/g++.exe - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Failed to find doctest, going to compile from source.
+Cloning into 'doctest-src'...
+remote: Enumerating objects: 2628, done.        
+remote: Counting objects: 100% (2628/2628), done.        
+remote: Compressing objects: 100% (1331/1331), done.        
+remote: Total 2628 (delta 1807), reused 1780 (delta 1173), pack-reused 0 (from 0)        
+Receiving objects: 100% (2628/2628), 3.77 MiB | 13.65 MiB/s, done.
+Resolving deltas: 100% (1807/1807), done.
+HEAD is now at ae7a135 fixed links
+CMake Deprecation Warning at cmake-build-debug/_deps/doctest-src/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 3.5 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Got doctest: C:/Users/lucas/GitRepos/8-semester/sP - Selected Topics in Programming/Lecture_6/cmake-build-debug/_deps/doctest-src
+-- Configuring done (7.6s)
+-- Generating done (0.1s)
+-- Build files have been written to: C:/Users/lucas/GitRepos/8-semester/sP - Selected Topics in Programming/Lecture_6/cmake-build-debug

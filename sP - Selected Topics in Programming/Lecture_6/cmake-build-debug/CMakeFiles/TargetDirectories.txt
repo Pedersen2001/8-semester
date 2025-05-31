@@ -1,0 +1,8 @@
+C:/Users/lucas/GitRepos/8-semester/sP - Selected Topics in Programming/Lecture_6/cmake-build-debug/CMakeFiles/main.dir
+C:/Users/lucas/GitRepos/8-semester/sP - Selected Topics in Programming/Lecture_6/cmake-build-debug/CMakeFiles/test.dir
+C:/Users/lucas/GitRepos/8-semester/sP - Selected Topics in Programming/Lecture_6/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/lucas/GitRepos/8-semester/sP - Selected Topics in Programming/Lecture_6/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/lucas/GitRepos/8-semester/sP - Selected Topics in Programming/Lecture_6/cmake-build-debug/_deps/doctest-build/CMakeFiles/doctest_with_main.dir
+C:/Users/lucas/GitRepos/8-semester/sP - Selected Topics in Programming/Lecture_6/cmake-build-debug/_deps/doctest-build/CMakeFiles/test.dir
+C:/Users/lucas/GitRepos/8-semester/sP - Selected Topics in Programming/Lecture_6/cmake-build-debug/_deps/doctest-build/CMakeFiles/edit_cache.dir
+C:/Users/lucas/GitRepos/8-semester/sP - Selected Topics in Programming/Lecture_6/cmake-build-debug/_deps/doctest-build/CMakeFiles/rebuild_cache.dir
