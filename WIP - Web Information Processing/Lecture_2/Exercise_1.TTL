@@ -400,15 +400,15 @@ aks:SponsorshipGoogleAI a aks:Sponsorship ;
     aks:currency "USD" .
 
 aks:GoogleAI a aks:Sponsor ;
-    rdfs:label "Google AI" ;
+    rdfs:label "Google AI" .
 
 aks:SponsorshipDeepMind a aks:Sponsorship ;
     aks:sponsoredBy aks:DeepMind ;
-    aks:financialSupport "30000.00"^^xsd:decimal ;
+    aks:financialSupport "30000.00"^^xsd:decimal;
     aks:currency "EUR" .
 
 aks:DeepMind a aks:Sponsor ;
-    rdfs:label "DeepMind" ;
+    rdfs:label "DeepMind" .
 
 aks:AIKnowledgeSummit2025 aks:hasSponsorship aks:SponsorshipGoogleAI, aks:SponsorshipDeepMind .
 

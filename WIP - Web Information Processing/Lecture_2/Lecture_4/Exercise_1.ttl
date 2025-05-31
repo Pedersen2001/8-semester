@@ -1,0 +1,68 @@
+# a) Modeling "Books published after 2000"
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix : <http://example.org/books-ontology#> . # Custom namespace
+
+# Classes
+:Book a owl:Class .
+:Author a owl:Class .
+
+# Properties
+:hasAuthor a owl:ObjectProperty ;
+    rdfs:domain :Book ;
+    rdfs:range :Author .
+
+:hasPublicationYear a owl:DatatypeProperty ;
+    rdfs:domain :Book ;
+    rdfs:range xsd:gYear . # Or xsd:integer if just the year number
+
+# Define the class of books published after 2000
+:RecentBook a owl:Class ;
+    owl:equivalentClass [
+        a owl:Restriction ;
+        owl:onProperty :hasPublicationYear ;
+        owl:someValuesFrom [
+            a rdfs:Datatype ;
+            owl:onDatatype xsd:gYear ;
+            owl:withRestrictions (
+                [ xsd:minExclusive "2000"^^xsd:gYear ]
+            )
+        ]
+    ] .
+
+# b) Modeling "at least one author who has published more than three books"
+
+# Helper Class: ProlificAuthor
+# An author who has authored more than 3 books.
+# This requires owl:qualifiedCardinality or owl:minCardinality in OWL 2.
+
+:ProlificAuthor a owl:Class ;
+    owl:equivalentClass [
+        a owl:Restriction ;
+        owl:onProperty :hasAuthor ;
+        owl:minQualifiedCardinality "4"^^xsd:nonNegativeInteger ; # At least 4 books
+        owl:onClass :Book ; # Specifically books
+        owl:inverseOf :hasAuthor # The inverse property: a Book hasAuthor an Author, so an Author 'isAuthoredBy' a Book
+    ] .
+# Note: OWL doesn't directly support inverseOf on owl:onProperty for qualified cardinalities as directly as this.
+# A more robust way might be to define an inverse property explicitly:
+:isAuthoredBy a owl:ObjectProperty ;
+    owl:inverseOf :hasAuthor .
+
+:ProlificAuthor a owl:Class ;
+    owl:equivalentClass [
+        a owl:Restriction ;
+        owl:onProperty :isAuthoredBy ;
+        owl:minQualifiedCardinality "4"^^xsd:nonNegativeInteger ;
+        owl:onClass :Book
+    ] .
+
+# The full rule:
+:RecentBook rdfs:subClassOf [
+    a owl:Restriction ;
+    owl:onProperty :hasAuthor ;
+    owl:someValuesFrom :ProlificAuthor
+] .

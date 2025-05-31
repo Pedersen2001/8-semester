@@ -1,0 +1,65 @@
+# a) How would you model the rule "If two users are friends, they must both have more than 100 posts" using object and datatype properties?
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix : <http://example.org/social-media-ontology#> . # Custom namespace
+@prefix swrl: <http://www.w3.org/2003/11/swrl#> .
+@prefix swrlb: <http://www.w3.org/2003/11/swrlb#> .
+
+# Classes
+:User a owl:Class .
+
+# Properties
+:isFriendOf a owl:ObjectProperty ;
+    rdfs:domain :User ;
+    rdfs:range :User ;
+    owl:symmetricProperty :isFriendOf . # Friendship is usually symmetric
+
+:hasPostCount a owl:DatatypeProperty ;
+    rdfs:domain :User ;
+    rdfs:range xsd:integer . # Number of posts
+
+# SWRL Rule for "If two users are friends, they must both have more than 100 posts"
+# This rule states: IF User1 (?u1) isFriendOf User2 (?u2), AND
+# User1 hasPostCount ?count1, AND User2 hasPostCount ?count2,
+# THEN it must be true that ?count1 is greaterThan 100 AND ?count2 is greaterThan 100.
+<http://example.org/social-media-ontology#FriendshipPostCountRule> a swrl:Imp ;
+    swrl:body (
+        [ a swrl:ClassAtom ; swrl:classPredicate :User ; swrl:argument1 swrl:var_u1 ]
+        [ a swrl:ClassAtom ; swrl:classPredicate :User ; swrl:argument1 swrl:var_u2 ]
+        [ a swrl:IndividualPropertyAtom ; swrl:propertyPredicate :isFriendOf ; swrl:argument1 swrl:var_u1 ; swrl:argument2 swrl:var_u2 ]
+        [ a swrl:DatavaluedPropertyAtom ; swrl:propertyPredicate :hasPostCount ; swrl:argument1 swrl:var_u1 ; swrl:argument2 swrl:var_count1 ]
+        [ a swrl:DatavaluedPropertyAtom ; swrl:propertyPredicate :hasPostCount ; swrl:argument1 swrl:var_u2 ; swrl:argument2 swrl:var_count2 ]
+    ) ;
+    swrl:head (
+        [ a swrl:BuiltinAtom ; swrl:builtin swrlb:greaterThan ; swrl:arguments ( swrl:var_count1 "100"^^xsd:integer ) ]
+        [ a swrl:BuiltinAtom ; swrl:builtin swrlb:greaterThan ; swrl:arguments ( swrl:var_count2 "100"^^xsd:integer ) ]
+    ) .
+
+# b) How could you ensure that the hasPostCount property is properly constrained to only accept numerical values greater than 100 for this rule?
+    :HighPostUser a owl:Class ;
+    owl:equivalentClass [
+        a owl:Restriction ;
+        owl:onProperty :hasPostCount ;
+        owl:someValuesFrom [
+            a rdfs:Datatype ;
+            owl:onDatatype xsd:integer ;
+            owl:withRestrictions (
+                [ xsd:minExclusive "100"^^xsd:integer ]
+            )
+        ]
+    ] .
+
+# Then, you could potentially try to make the rule:
+# If two users are friends, then they both must be instances of HighPostUser.
+<http://example.org/social-media-ontology#FriendshipHighPostRule> a swrl:Imp ;
+    swrl:body (
+        [ a swrl:ClassAtom ; swrl:classPredicate :User ; swrl:argument1 swrl:var_u1 ]
+        [ a swrl:ClassAtom ; swrl:classPredicate :User ; swrl:argument1 swrl:var_u2 ]
+        [ a swrl:IndividualPropertyAtom ; swrl:propertyPredicate :isFriendOf ; swrl:argument1 swrl:var_u1 ; swrl:argument2 swrl:var_u2 ]
+    ) ;
+    swrl:head (
+        [ a swrl:ClassAtom ; swrl:classPredicate :HighPostUser ; swrl:argument1 swrl:var_u1 ]
+        [ a swrl:ClassAtom ; swrl:classPredicate :HighPostUser ; swrl:argument1 swrl:var_u2 ]
+    ) .

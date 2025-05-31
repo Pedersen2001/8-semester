@@ -1,0 +1,38 @@
+# a) How would you model this rule using OWL properties?
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix : <http://example.org/org-ontology#> . # Custom namespace
+@prefix swrl: <http://www.w3.org/2003/11/swrl#> .
+@prefix swrlb: <http://www.w3.org/2003/11/swrlb#> . # For SWRL built-ins
+
+# Classes
+:Employee a owl:Class .
+
+# Properties
+:reportsTo a owl:ObjectProperty ;
+    rdfs:domain :Employee ;
+    rdfs:range :Employee . # A manager is also an employee
+
+:hasSalary a owl:DatatypeProperty ;
+    rdfs:domain :Employee ;
+    rdfs:range xsd:decimal . # Or xsd:integer, xsd:float, etc.
+
+# SWRL Rule for "An employee’s manager must have a salary greater than the employee's salary"
+# This rule states: IF an Employee (?e) reportsTo a Manager (?m), AND
+# the Employee hasSalary ?s1, AND the Manager hasSalary ?s2,
+# THEN it must be true that ?s2 is greater than ?s1.
+# If this condition is not met, a reasoner would flag an inconsistency.
+<http://example.org/org-ontology#SalaryRule> a swrl:Imp ;
+    swrl:body (
+        [ a swrl:ClassAtom ; swrl:classPredicate :Employee ; swrl:argument1 swrl:var_e ]
+        [ a swrl:ClassAtom ; swrl:classPredicate :Employee ; swrl:argument1 swrl:var_m ]
+        [ a swrl:IndividualPropertyAtom ; swrl:propertyPredicate :reportsTo ; swrl:argument1 swrl:var_e ; swrl:argument2 swrl:var_m ]
+        [ a swrl:DatavaluedPropertyAtom ; swrl:propertyPredicate :hasSalary ; swrl:argument1 swrl:var_e ; swrl:argument2 swrl:var_s1 ]
+        [ a swrl:DatavaluedPropertyAtom ; swrl:propertyPredicate :hasSalary ; swrl:argument1 swrl:var_m ; swrl:argument2 swrl:var_s2 ]
+    ) ;
+    swrl:head (
+        [ a swrl:BuiltinAtom ; swrl:builtin swrlb:greaterThan ; swrl:arguments ( swrl:var_s2 swrl:var_s1 ) ]
+    ) .
