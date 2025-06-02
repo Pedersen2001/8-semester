@@ -1,3 +1,0 @@
-[submodule "sP-Exam/benchmark"]
-	path = sP-Exam/benchmark
-	url = https://github.com/google/benchmark.git
