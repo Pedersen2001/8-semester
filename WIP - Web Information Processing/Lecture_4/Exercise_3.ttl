@@ -21,9 +21,9 @@
     rdfs:range xsd:integer . # Number of posts
 
 # SWRL Rule for "If two users are friends, they must both have more than 100 posts"
-# This rule states: IF User1 (?u1) isFriendOf User2 (?u2), AND
-# User1 hasPostCount ?count1, AND User2 hasPostCount ?count2,
-# THEN it must be true that ?count1 is greaterThan 100 AND ?count2 is greaterThan 100.
+# This rule states: IF User1 isFriendOf User2, AND
+# User1 hasPostCount count1, AND User2 hasPostCount count2,
+# THEN it must be true that count1 is greaterThan 100 AND count2 is greaterThan 100.
 <http://example.org/social-media-ontology#FriendshipPostCountRule> a swrl:Imp ;
     swrl:body (
         [ a swrl:ClassAtom ; swrl:classPredicate :User ; swrl:argument1 swrl:var_u1 ]
@@ -51,7 +51,6 @@
         ]
     ] .
 
-# Then, you could potentially try to make the rule:
 # If two users are friends, then they both must be instances of HighPostUser.
 <http://example.org/social-media-ontology#FriendshipHighPostRule> a swrl:Imp ;
     swrl:body (
