@@ -1,3 +1,7 @@
+A detailed description of each of the various XML Schema datatypes is given in the online
+specifcation: see https://www.w3.org/TR/xmlschema11-2/.
+
+
 1. "2"^^xsd:integer vs. "2.0"^^xsd:decimal
    xsd:integer represents exact integer values (whole numbers).
 
