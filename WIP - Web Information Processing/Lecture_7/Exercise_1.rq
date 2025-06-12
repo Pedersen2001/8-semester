@@ -1,0 +1,26 @@
+# 1. Retrieve all information about Albert Einstein in DBpedia based on the keyword "Einstein", including his birth place, education, and achievements.
+
+SELECT DISTINCT ?s ?p ?o
+WHERE {
+  ?s rdfs:label ?label .
+  FILTER (contains(lcase(str(?label)), "einstein"@en)) .
+  ?s a dbo:Person . # Ensure it's a person
+  OPTIONAL { ?s dbo:birthPlace ?birthPlaceUri . ?birthPlaceUri rdfs:label ?birthPlace . }
+  OPTIONAL { ?s dbo:education ?educationUri . ?educationUri rdfs:label ?education . }
+  OPTIONAL { ?s dbo:almaMater ?almaMaterUri . ?almaMaterUri rdfs:label ?almaMater . }
+  OPTIONAL { ?s dbo:knownFor ?knownForUri . ?knownForUri rdfs:label ?knownFor . }
+  OPTIONAL { ?s dbo:awards ?awardUri . ?awardUri rdfs:label ?award . }
+  OPTIONAL { ?s dbo:notableWorks ?workUri . ?workUri rdfs:label ?work . }
+  OPTIONAL { ?s ?p ?o . FILTER (!isLiteral(?o) || lang(?o) = 'en' || lang(?o) = '') } # General properties
+}
+LIMIT 100 # Limit for demonstration
+
+
+
+# bif:contains(lcase(str(?label)), "einstein"@en): This is a full-text search for "einstein" in the lowercase label.
+# dbo:Person: Filters results to ensure we are looking at a person.
+# OPTIONAL: Used for properties that might not be present for every entity.
+# dbo:birthPlace, dbo:education, dbo:almaMater, dbo:knownFor, dbo:awards, dbo:notableWorks: Common properties for biographical information and achievements.
+
+#DBpedia: http://dbpedia.org/sparql
+#Wikidata: https://query.wikidata.org/

@@ -1,0 +1,26 @@
+# 2. Query DBpedia for movies starred by Leonardo DiCaprio and then retrieve other actors who starred in the same films.
+
+SELECT DISTINCT ?filmLabel ?otherActorLabel
+WHERE {
+  VALUES ?leoDiCaprioLabel { "Leonardo DiCaprio"@en }
+  ?leoDiCaprio dbo:starring ?film .
+  ?leoDiCaprio rdfs:label ?leoDiCaprioLabel .
+
+  ?film a dbo:Film .
+  ?film rdfs:label ?filmLabel .
+  ?film dbo:starring ?otherActor .
+
+  FILTER (?otherActor != ?leoDiCaprio) . # Exclude Leonardo DiCaprio himself
+  ?otherActor rdfs:label ?otherActorLabel .
+  FILTER (lang(?otherActorLabel) = 'en')
+}
+LIMIT 100
+
+
+# VALUES ?leoDiCaprioLabel { "Leonardo DiCaprio"@en }: Specifies the label for Leonardo DiCaprio. You might need to find the exact URI for Leonardo DiCaprio first if the label isn't unique enough, but DBpedia is usually good at resolving famous names.
+# ?leoDiCaprio dbo:starring ?film: Finds films where Leonardo DiCaprio is an actor.
+# ?film dbo:starring ?otherActor: Finds all actors in those films.
+# FILTER (?otherActor != ?leoDiCaprio): Ensures we don't list Leonardo DiCaprio as "other actor".
+
+#DBpedia: http://dbpedia.org/sparql
+#Wikidata: https://query.wikidata.org/

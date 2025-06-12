@@ -1,0 +1,41 @@
+# 7. Query both KGs and return 10 entities that represent the same famous musicians.
+
+SELECT DISTINCT ?dbpediaMusician ?dbpediaLabel ?wikidataMusician ?wikidataLabel
+WHERE {
+  VALUES ?musicianLabels {
+    "Taylor Swift"@en
+    "Ed Sheeran"@en
+    "Adele"@en
+    "Beyoncé"@en
+    "Rihanna"@en
+    "Justin Bieber"@en
+    "Drake"@en
+    "The Weeknd"@en
+    "Ariana Grande"@en
+    "Billie Eilish"@en
+  }
+
+  ?dbpediaMusician rdfs:label ?dbpediaLabel .
+  ?dbpediaMusician a dbo:MusicalArtist . # Filter for musical artists in DBpedia
+  ?dbpediaMusician owl:sameAs ?wikidataMusician .
+
+  FILTER (?dbpediaLabel IN (?musicianLabels)) .
+  FILTER (STRSTARTS(STR(?wikidataMusician), "http://www.wikidata.org/entity/")) .
+
+  SERVICE <http://query.wikidata.org/sparql> {
+    ?wikidataMusician wdt:P31 wd:Q5 . # P31 is "instance of", Q5 is "human"
+    ?wikidataMusician rdfs:label ?wikidataLabel .
+    FILTER (lang(?wikidataLabel) = 'en') .
+  }
+}
+LIMIT 10
+
+
+# VALUES ?musicianLabels: A list of famous musician labels.
+# dbo:MusicalArtist: Filters for musical artists in DBpedia.
+# owl:sameAs ?wikidataMusician: Finds the aligned Wikidata entity.
+# wdt:P31 wd:Q5: (Wikidata side) ensures the entity is a human (as opposed to a band, for example).
+# SERVICE <http://query.wikidata.org/sparql>: Again, a federated query to fetch the Wikidata label and potentially more properties.
+
+#DBpedia: http://dbpedia.org/sparql
+#Wikidata: https://query.wikidata.org/

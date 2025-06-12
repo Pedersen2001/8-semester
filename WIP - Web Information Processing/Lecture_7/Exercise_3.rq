@@ -1,0 +1,32 @@
+# 3. Query DBpedia for movies released after 2000, filtered by the Science Fiction genre, and then group by director.
+
+SELECT ?directorLabel (GROUP_CONCAT(DISTINCT ?filmLabel; SEPARATOR=", ") AS ?films) (COUNT(DISTINCT ?film) AS ?numberOfFilms)
+WHERE {
+  ?film a dbo:Film .
+  ?film dbo:releaseDate ?releaseDate .
+  ?film dbo:genre ?genre .
+  ?film dbo:director ?director .
+
+  ?film rdfs:label ?filmLabel .
+  ?genre rdfs:label "Science Fiction"@en .
+  ?director rdfs:label ?directorLabel .
+
+  FILTER (YEAR(?releaseDate) > 2000) .
+  FILTER (lang(?filmLabel) = 'en') .
+  FILTER (lang(?directorLabel) = 'en')
+}
+GROUP BY ?directorLabel
+ORDER BY DESC(?numberOfFilms)
+LIMIT 100
+
+
+# dbo:releaseDate ?releaseDate: Gets the release date of the film.
+# dbo:genre ?genre: Gets the genre of the film.
+# ?genre rdfs:label "Science Fiction"@en: Filters for films with the "Science Fiction" genre label.
+# FILTER (YEAR(?releaseDate) > 2000): Filters films released after the year 2000.
+# GROUP BY ?directorLabel: Groups the results by director.
+# GROUP_CONCAT: Concatenates the film titles for each director.
+# COUNT(DISTINCT ?film): Counts the number of films for each director.
+
+#DBpedia: http://dbpedia.org/sparql
+#Wikidata: https://query.wikidata.org/

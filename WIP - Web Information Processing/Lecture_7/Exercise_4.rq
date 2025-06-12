@@ -1,0 +1,41 @@
+# 4. Recommend books based on common authors
+
+#DBpedia Query:
+SELECT DISTINCT ?bookLabel
+WHERE {
+  VALUES ?jkRowlingLabel { "J. K. Rowling"@en }
+  ?jkRowling rdfs:label ?jkRowlingLabel .
+  ?book dbo:author ?jkRowling .
+  ?book a dbo:Book .
+  ?book rdfs:label ?bookLabel .
+  FILTER (lang(?bookLabel) = 'en')
+}
+ORDER BY ?bookLabel
+LIMIT 100
+
+
+# VALUES ?jkRowlingLabel { "J. K. Rowling"@en }: Specifies the author by label.
+# ?book dbo:author ?jkRowling: Finds books where J.K. Rowling is the author.
+
+
+#Wikidata Query:
+SELECT DISTINCT ?book ?bookLabel ?seriesLabel
+WHERE {
+  VALUES ?jkRowlingID { wd:Q34660 } # Wikidata QID for J.K. Rowling
+  ?book wdt:P50 ?jkRowlingID .     # P50 is "author"
+  ?book wdt:P31 wd:Q571 .         # P31 is "instance of", Q571 is "book"
+  OPTIONAL { ?book wdt:P179 ?series . # P179 is "part of the series"
+             ?series rdfs:label ?seriesLabel FILTER (lang(?seriesLabel) = 'en') . }
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+}
+ORDER BY ?bookLabel
+LIMIT 100
+
+# wd:Q34660: Wikidata QID for J.K. Rowling. Finding the QID is crucial for Wikidata queries.
+# wdt:P50 ?jkRowlingID: Filters by author (P50 property).
+# wdt:P31 wd:Q571: Filters to ensure the item is a book (P31 property, instance of Q571 book).
+# OPTIONAL { ?book wdt:P179 ?series . }: Attempts to find if the book is part of a series (P179 property).
+# SERVICE wikibase:label: Used to retrieve human-readable labels for entities.
+
+#DBpedia: http://dbpedia.org/sparql
+#Wikidata: https://query.wikidata.org/

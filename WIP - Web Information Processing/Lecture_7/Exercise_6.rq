@@ -1,0 +1,28 @@
+# 6. Find aligned entities between DBpedia and Wikidata for 5 famous politicians (e.g., Barack Obama, Angela Merkel, Donald Trump).
+
+
+SELECT DISTINCT ?dbpediaResource ?dbpediaLabel ?wikidataResource ?wikidataLabel
+WHERE {
+  VALUES ?politicianLabels { "Barack Obama"@en "Angela Merkel"@en "Donald Trump"@en "Emmanuel Macron"@en "Justin Trudeau"@en }
+
+  ?dbpediaResource rdfs:label ?dbpediaLabel .
+  ?dbpediaResource owl:sameAs ?wikidataResource .
+
+  FILTER (?dbpediaLabel IN (?politicianLabels)) .
+  FILTER (STRSTARTS(STR(?wikidataResource), "http://www.wikidata.org/entity/")) .
+
+  SERVICE <http://query.wikidata.org/sparql> {
+    ?wikidataResource rdfs:label ?wikidataLabel .
+    FILTER (lang(?wikidataLabel) = 'en') .
+  }
+}
+LIMIT 5
+
+
+# VALUES ?politicianLabels: Defines the labels of the politicians you're interested in.
+# ?dbpediaResource owl:sameAs ?wikidataResource: This is the core of finding aligned entities. owl:sameAs is used to declare that two URIs refer to the same individual.
+# FILTER (STRSTARTS(STR(?wikidataResource), "http://www.wikidata.org/entity/")): Ensures the owl:sameAs link is specifically to Wikidata.
+# SERVICE <http://query.wikidata.org/sparql>: This is a federated query, allowing you to query Wikidata directly from a DBpedia endpoint (or vice-versa, depending on the endpoint you're using). You would typically run this on a DBpedia endpoint.
+
+#DBpedia: http://dbpedia.org/sparql
+#Wikidata: https://query.wikidata.org/

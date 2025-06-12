@@ -1,0 +1,28 @@
+# 5. Recommendations Based on Entity Relations
+
+
+SELECT DISTINCT ?film ?filmLabel ?directorLabel ?genreLabel
+WHERE {
+  VALUES ?nolanID { wd:Q25191 } # Wikidata QID for Christopher Nolan
+  ?film wdt:P57 ?nolanID .     # P57 is "director"
+  ?film wdt:P31 wd:Q11424 .     # P31 is "instance of", Q11424 is "film"
+
+  OPTIONAL { ?film wdt:P136 ?genre . # P136 is "genre"
+             ?genre rdfs:label ?genreLabel FILTER (lang(?genreLabel) = 'en') . }
+
+  ?nolanID rdfs:label ?directorLabel FILTER (lang(?directorLabel) = 'en') .
+  ?film rdfs:label ?filmLabel FILTER (lang(?filmLabel) = 'en') .
+
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+}
+ORDER BY ?filmLabel
+LIMIT 100
+
+
+# wd:Q25191: Wikidata QID for Christopher Nolan.
+# wdt:P57 ?nolanID: Finds films directed by Christopher Nolan.
+# wdt:P31 wd:Q11424: Filters to ensure the item is a film.
+# OPTIONAL { ?film wdt:P136 ?genre . }: Retrieves the genre of the film. You would then manually (or in a subsequent query) look for other films with these genres.
+
+#DBpedia: http://dbpedia.org/sparql
+#Wikidata: https://query.wikidata.org/
